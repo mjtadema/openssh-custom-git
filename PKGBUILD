@@ -1,4 +1,3 @@
-# $Id: PKGBUILD,v 1.67 2007/12/03 18:16:04 aaron Exp $
 # Maintainer: Aaron Griffin <aaron@archlinux.org>
 # Contributor: judd <jvinet@zeroflux.org>
 
