@@ -3,7 +3,7 @@
 
 pkgname=openssh
 pkgver=5.1p1
-pkgrel=1
+pkgrel=2
 #_gsskexver=20080404
 pkgdesc='A Secure SHell server/client'
 arch=(i686 x86_64)
