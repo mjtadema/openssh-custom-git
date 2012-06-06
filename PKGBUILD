@@ -41,6 +41,7 @@ build() {
 		--with-xauth=/usr/bin/xauth \
 		--with-mantype=man \
 		--with-md5-passwords \
+		--with-pid-dir=/run \
 
 	make
 }
