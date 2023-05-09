@@ -6,7 +6,7 @@
 # Changes by Matthijs Tadema
 
 pkgname=openssh-custom
-pkgver=9.1p1
+pkgver=9.3p1
 pkgrel=1
 pkgdesc="SSH protocol implementation for remote login, command execution and file transfer"
 arch=('x86_64')
@@ -24,7 +24,7 @@ depends=(
   'pam' 'libpam.so'
   'zlib'
 )
-makedepends=('libfido2' 'linux-headers')
+makedepends=('libfido2' 'linux-amd-raven-headers')
 optdepends=(
   'libfido2: FIDO/U2F support'
   'x11-ssh-askpass: input passphrase in X'
@@ -37,21 +37,18 @@ backup=(
 )
 _tag=`sed 's/\./_/;s/p/_P/' <<< "V_${pkgver}"`
 source=(
-  "https://github.com/openssh/openssh-portable/archive/refs/tags/${_tag}.tar.gz"
-  'percent.patch'
+  "${pkgname%-custom}-portable-${_tag}::git+https://github.com/mjtadema/openssh-portable.git"
   'sshdgenkeys.service'
   'sshd.service'
   'sshd.conf'
   'sshd.pam'
 )
 sha256sums=('SKIP'
-            '527a8a25cf837c479ee68f679cc65427932cb5c95bec64152cc12c04cab14175'
             'e5305767b2d317183ad1c5022a5f6705bd9014a8b22495a000fd482713738611'
             'e40f8b7c8e5e2ecf3084b3511a6c36d5b5c9f9e61f2bb13e3726c71dc7d4fbc7'
             '4effac1186cc62617f44385415103021f72f674f8b8e26447fc1139c670090f6'
             '64576021515c0a98b0aaf0a0ae02e0f5ebe8ee525b1e647ab68f369f81ecd846')
 b2sums=('SKIP'
-        '0c52032a7329386baa5cbcc6d2b366816ca691a6ac033783e6c958d96008717ee01a3ab33826ffae7c9acd8a208de2b9f2456000bca131f73a5673d193b4e73e'
         '09fad3648f48f13ee80195b90913feeba21240d121b1178e0ce62f4a17b1f7e58e8edc22c04403e377ab300f5022a804c848f5be132765d5ca26a38aab262e50'
         '07ad5c7fb557411a6646ff6830bc9d564c07cbddc4ce819641d31c05dbdf677bfd8a99907cf529a7ee383b8c250936a6423f4b4b97ba0f1c14f627bbd629bd4e'
         '27571f728c3c10834a81652f3917188436474b588f8b047462e44b6c7a424f60d06ce8cb74839b691870177d7261592207d7f35d4ae6c79af87d6a7ea156d395'
@@ -63,12 +60,6 @@ validpgpkeys=('7168B983815A5EEF59A4ADFD2A3F414E736060BA')  # Damien Miller <djm@
 #    # Git, tags available
 #    printf "%s" "$(git describe --long | sed 's/\([^-]*-\)g/r\1/;s/-/./g')"
 #}
-
-prepare() {
-	cd "$srcdir/${pkgname%-custom}-portable-${_tag}"
-	patch -p1 -i "$srcdir/percent.patch"
-}
-
 
 build() {
 	cd "$srcdir/${pkgname%-custom}-portable-${_tag}"
