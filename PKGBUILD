@@ -21,7 +21,10 @@ depends=(
   'pam' 'libpam.so'
   'zlib'
 )
-makedepends=('libfido2' 'linux-headers')
+makedepends=(
+  'libfido2'
+  'linux-headers'
+)
 optdepends=(
   'libfido2: FIDO/U2F support'
   'x11-ssh-askpass: input passphrase in X'
