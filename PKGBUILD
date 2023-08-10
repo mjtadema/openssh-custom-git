@@ -5,7 +5,7 @@
 # Contributor: judd <jvinet@zeroflux.org>
 
 pkgname=openssh
-pkgver=9.3p2
+pkgver=9.4p1
 pkgrel=1
 pkgdesc="SSH protocol implementation for remote login, command execution and file transfer"
 arch=(x86_64)
@@ -27,6 +27,7 @@ makedepends=(
 )
 optdepends=(
   'libfido2: FIDO/U2F support'
+  'sh: for ssh-copy-id and findssl.sh'
   'x11-ssh-askpass: input passphrase in X'
   'xorg-xauth: X11 forwarding'
 )
@@ -43,14 +44,14 @@ source=(
   sshd.conf
   sshd.pam
 )
-sha256sums=('200ebe147f6cb3f101fd0cdf9e02442af7ddca298dffd9f456878e7ccac676e8'
+sha256sums=('3608fd9088db2163ceb3e600c85ab79d0de3d221e59192ea1923e23263866a85'
             'SKIP'
             '27e43dfd1506c8a821ec8186bae65f2dc43ca038616d6de59f322bd14aa9d07f'
             'e5305767b2d317183ad1c5022a5f6705bd9014a8b22495a000fd482713738611'
             'e40f8b7c8e5e2ecf3084b3511a6c36d5b5c9f9e61f2bb13e3726c71dc7d4fbc7'
             '4effac1186cc62617f44385415103021f72f674f8b8e26447fc1139c670090f6'
             '64576021515c0a98b0aaf0a0ae02e0f5ebe8ee525b1e647ab68f369f81ecd846')
-b2sums=('38f8d4ada263112b318fafccabf0a33a004d8290a867434004eb3d37127c9bdabe6e0225fca9d6d68fb54338fec81dcc9313ca7c91d3a033311db44174dc9f6f'
+b2sums=('d13d758129cce947d3f12edb6e88406aad10de6887b19ffa3ebd8e382b742a05f2a692a8824aec99939f6c7e13fbccc3bb14e5ee112f9a9255d4882eb87dcf53'
         'SKIP'
         '29e1a1c2744e0234830c6f93a46338ea8dc943370e20a24883d207d611025e54643da678f2826050c073a36be48dfdc7329d4cfb144c2ff90607a5f10f73dc59'
         '09fad3648f48f13ee80195b90913feeba21240d121b1178e0ce62f4a17b1f7e58e8edc22c04403e377ab300f5022a804c848f5be132765d5ca26a38aab262e50'
