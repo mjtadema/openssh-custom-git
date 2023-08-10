@@ -8,22 +8,22 @@ pkgname=openssh
 pkgver=9.3p2
 pkgrel=1
 pkgdesc="SSH protocol implementation for remote login, command execution and file transfer"
-arch=('x86_64')
+arch=(x86_64)
 url='https://www.openssh.com/portable.html'
-license=('custom:BSD')
+license=(custom:BSD)
 depends=(
-  'glibc'
-  'krb5' 'libkrb5.so' 'libgssapi_krb5.so'
-  'ldns'
-  'libedit'
-  'libxcrypt' 'libcrypt.so'
-  'openssl'
-  'pam' 'libpam.so'
-  'zlib'
+  glibc
+  krb5 libkrb5.so libgssapi_krb5.so
+  ldns
+  libedit
+  libxcrypt libcrypt.so
+  openssl
+  pam libpam.so
+  zlib
 )
 makedepends=(
-  'libfido2'
-  'linux-headers'
+  libfido2
+  linux-headers
 )
 optdepends=(
   'libfido2: FIDO/U2F support'
@@ -31,17 +31,17 @@ optdepends=(
   'xorg-xauth: X11 forwarding'
 )
 backup=(
-  'etc/pam.d/sshd'
-  'etc/ssh/ssh_config'
-  'etc/ssh/sshd_config'
+  etc/pam.d/sshd
+  etc/ssh/ssh_config
+  etc/ssh/sshd_config
 )
 source=(
-  "https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/${pkgname}-${pkgver}.tar.gz"{,.asc}
-  "$pkgname-9.0p1-sshd_config.patch"
-  'sshdgenkeys.service'
-  'sshd.service'
-  'sshd.conf'
-  'sshd.pam'
+  https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/$pkgname-$pkgver.tar.gz{,.asc}
+  $pkgname-9.0p1-sshd_config.patch
+  sshdgenkeys.service
+  sshd.service
+  sshd.conf
+  sshd.pam
 )
 sha256sums=('200ebe147f6cb3f101fd0cdf9e02442af7ddca298dffd9f456878e7ccac676e8'
             'SKIP'
@@ -60,7 +60,7 @@ b2sums=('38f8d4ada263112b318fafccabf0a33a004d8290a867434004eb3d37127c9bdabe6e022
 validpgpkeys=('7168B983815A5EEF59A4ADFD2A3F414E736060BA')  # Damien Miller <djm@mindrot.org>
 
 prepare() {
-  patch -Np1 -d "$pkgname-$pkgver" -i ../$pkgname-9.0p1-sshd_config.patch
+  patch -Np1 -d $pkgname-$pkgver -i ../$pkgname-9.0p1-sshd_config.patch
 }
 
 build() {
@@ -82,35 +82,33 @@ build() {
     --with-default-path='/usr/local/sbin:/usr/local/bin:/usr/bin'
   )
 
-  cd "${pkgname}-${pkgver}"
+  cd $pkgname-$pkgver
 
   ./configure "${configure_options[@]}"
   make
 }
 
 check() {
-  cd "${pkgname}-${pkgver}"
-
   # NOTE: make t-exec does not work in our build environment
-  make file-tests interop-tests unit
+  make file-tests interop-tests unit -C $pkgname-$pkgver
 }
 
 package() {
-  cd "${pkgname}-${pkgver}"
+  cd $pkgname-$pkgver
 
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR="$pkgdir" install
 
-  ln -sf ssh.1.gz "${pkgdir}"/usr/share/man/man1/slogin.1.gz
-  install -Dm644 LICENCE -t "${pkgdir}/usr/share/licenses/${pkgname}/"
+  ln -sf ssh.1.gz "$pkgdir"/usr/share/man/man1/slogin.1.gz
+  install -Dm644 LICENCE -t "$pkgdir/usr/share/licenses/$pkgname/"
 
-  install -Dm644 ../sshdgenkeys.service -t "${pkgdir}"/usr/lib/systemd/system/
-  install -Dm644 ../sshd.service -t "${pkgdir}"/usr/lib/systemd/system/
-  install -Dm644 ../sshd.conf -t "${pkgdir}"/usr/lib/tmpfiles.d/
-  install -Dm644 ../sshd.pam "${pkgdir}"/etc/pam.d/sshd
+  install -Dm644 ../sshdgenkeys.service -t "$pkgdir"/usr/lib/systemd/system/
+  install -Dm644 ../sshd.service -t "$pkgdir"/usr/lib/systemd/system/
+  install -Dm644 ../sshd.conf -t "$pkgdir"/usr/lib/tmpfiles.d/
+  install -Dm644 ../sshd.pam "$pkgdir"/etc/pam.d/sshd
 
-  install -Dm755 contrib/findssl.sh -t "${pkgdir}"/usr/bin/
-  install -Dm755 contrib/ssh-copy-id -t "${pkgdir}"/usr/bin/
-  install -Dm644 contrib/ssh-copy-id.1 -t "${pkgdir}"/usr/share/man/man1/
+  install -Dm755 contrib/findssl.sh -t "$pkgdir"/usr/bin/
+  install -Dm755 contrib/ssh-copy-id -t "$pkgdir"/usr/bin/
+  install -Dm644 contrib/ssh-copy-id.1 -t "$pkgdir"/usr/share/man/man1/
 }
 
 # vim: ts=2 sw=2 et:
