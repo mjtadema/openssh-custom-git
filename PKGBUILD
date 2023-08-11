@@ -61,6 +61,9 @@ b2sums=('d13d758129cce947d3f12edb6e88406aad10de6887b19ffa3ebd8e382b742a05f2a692a
 validpgpkeys=('7168B983815A5EEF59A4ADFD2A3F414E736060BA')  # Damien Miller <djm@mindrot.org>
 
 prepare() {
+  # remove variable (but useless) first line in config (related to upstream VCS)
+  sed '/^#.*\$.*\$$/d' -i $pkgname-$pkgver/ssh{,d}_config
+
   patch -Np1 -d $pkgname-$pkgver -i ../$pkgname-9.0p1-sshd_config.patch
 }
 
