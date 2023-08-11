@@ -38,7 +38,7 @@ backup=(
 )
 source=(
   https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/$pkgname-$pkgver.tar.gz{,.asc}
-  $pkgname-9.0p1-sshd_config.patch
+  00-archlinux.conf
   sshdgenkeys.service
   sshd.service
   sshd.conf
@@ -46,25 +46,28 @@ source=(
 )
 sha256sums=('3608fd9088db2163ceb3e600c85ab79d0de3d221e59192ea1923e23263866a85'
             'SKIP'
-            '27e43dfd1506c8a821ec8186bae65f2dc43ca038616d6de59f322bd14aa9d07f'
+            '78b806c38bc1e246daaa941bfe7880e6eb6f53f093bea5d5868525ae6d223d30'
             'e5305767b2d317183ad1c5022a5f6705bd9014a8b22495a000fd482713738611'
             'e40f8b7c8e5e2ecf3084b3511a6c36d5b5c9f9e61f2bb13e3726c71dc7d4fbc7'
-            '4effac1186cc62617f44385415103021f72f674f8b8e26447fc1139c670090f6'
+            '99c62dd74d8dfd8912d7a4ffda91904e4fe5269df5ab9397abd88422154f2aa5'
             '64576021515c0a98b0aaf0a0ae02e0f5ebe8ee525b1e647ab68f369f81ecd846')
 b2sums=('d13d758129cce947d3f12edb6e88406aad10de6887b19ffa3ebd8e382b742a05f2a692a8824aec99939f6c7e13fbccc3bb14e5ee112f9a9255d4882eb87dcf53'
         'SKIP'
-        '29e1a1c2744e0234830c6f93a46338ea8dc943370e20a24883d207d611025e54643da678f2826050c073a36be48dfdc7329d4cfb144c2ff90607a5f10f73dc59'
+        '1ff8cd4ae22efed2b4260f1e518de919c4b290be4e0b5edbc8e2225ffe63788678d1961e6f863b85974c4697428ee827bcbabad371cfc91cc8b36eae9402eb97'
         '09fad3648f48f13ee80195b90913feeba21240d121b1178e0ce62f4a17b1f7e58e8edc22c04403e377ab300f5022a804c848f5be132765d5ca26a38aab262e50'
         '07ad5c7fb557411a6646ff6830bc9d564c07cbddc4ce819641d31c05dbdf677bfd8a99907cf529a7ee383b8c250936a6423f4b4b97ba0f1c14f627bbd629bd4e'
-        '27571f728c3c10834a81652f3917188436474b588f8b047462e44b6c7a424f60d06ce8cb74839b691870177d7261592207d7f35d4ae6c79af87d6a7ea156d395'
+        '935588c98b344b6521418dfb831675198fda050115efbb44924cfd41bff1fe80a43c33c3406f9eb345249de3fca2abf1a503a3fd1016639227e11cced32cf175'
         '557d015bca7008ce824111f235da67b7e0051a693aaab666e97b78e753ed7928b72274af03d7fde12033986b733d5f996faf2a4feb6ecf53f39accae31334930')
 validpgpkeys=('7168B983815A5EEF59A4ADFD2A3F414E736060BA')  # Damien Miller <djm@mindrot.org>
 
 prepare() {
+  cd $pkgname-$pkgver
   # remove variable (but useless) first line in config (related to upstream VCS)
-  sed '/^#.*\$.*\$$/d' -i $pkgname-$pkgver/ssh{,d}_config
+  sed '/^#.*\$.*\$$/d' -i ssh{,d}_config
 
-  patch -Np1 -d $pkgname-$pkgver -i ../$pkgname-9.0p1-sshd_config.patch
+  # prepend configuration option to include drop-in configuration files for sshd_config
+  printf "# Include drop-in configurations\nInclude /etc/ssh/sshd_config.d/*.conf\n" | cat - sshd_config > sshd_config.tmp
+  mv -v sshd_config.tmp sshd_config
 }
 
 build() {
@@ -101,6 +104,8 @@ package() {
   cd $pkgname-$pkgver
 
   make DESTDIR="$pkgdir" install
+
+  install -vDm 644 ../00-archlinux.conf -t "$pkgdir/etc/ssh/sshd_config.d/"
 
   ln -sf ssh.1.gz "$pkgdir"/usr/share/man/man1/slogin.1.gz
   install -Dm644 LICENCE -t "$pkgdir/usr/share/licenses/$pkgname/"
