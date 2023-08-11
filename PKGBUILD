@@ -49,14 +49,14 @@ sha256sums=('3608fd9088db2163ceb3e600c85ab79d0de3d221e59192ea1923e23263866a85'
             '78b806c38bc1e246daaa941bfe7880e6eb6f53f093bea5d5868525ae6d223d30'
             'e5305767b2d317183ad1c5022a5f6705bd9014a8b22495a000fd482713738611'
             'e40f8b7c8e5e2ecf3084b3511a6c36d5b5c9f9e61f2bb13e3726c71dc7d4fbc7'
-            '99c62dd74d8dfd8912d7a4ffda91904e4fe5269df5ab9397abd88422154f2aa5'
+            '76635a91526ce44571485e292e3a777ded6a439af78cb93514b999f91fb9b327'
             '64576021515c0a98b0aaf0a0ae02e0f5ebe8ee525b1e647ab68f369f81ecd846')
 b2sums=('d13d758129cce947d3f12edb6e88406aad10de6887b19ffa3ebd8e382b742a05f2a692a8824aec99939f6c7e13fbccc3bb14e5ee112f9a9255d4882eb87dcf53'
         'SKIP'
         '1ff8cd4ae22efed2b4260f1e518de919c4b290be4e0b5edbc8e2225ffe63788678d1961e6f863b85974c4697428ee827bcbabad371cfc91cc8b36eae9402eb97'
         '09fad3648f48f13ee80195b90913feeba21240d121b1178e0ce62f4a17b1f7e58e8edc22c04403e377ab300f5022a804c848f5be132765d5ca26a38aab262e50'
         '07ad5c7fb557411a6646ff6830bc9d564c07cbddc4ce819641d31c05dbdf677bfd8a99907cf529a7ee383b8c250936a6423f4b4b97ba0f1c14f627bbd629bd4e'
-        '935588c98b344b6521418dfb831675198fda050115efbb44924cfd41bff1fe80a43c33c3406f9eb345249de3fca2abf1a503a3fd1016639227e11cced32cf175'
+        'a3fd8f00430168f03dcbc4a5768ed788dd43140e365a882b601510f53f69704da04f24660157bb8a43125f5389528993732d99569d77d5f3358074e7ae36d4ca'
         '557d015bca7008ce824111f235da67b7e0051a693aaab666e97b78e753ed7928b72274af03d7fde12033986b733d5f996faf2a4feb6ecf53f39accae31334930')
 validpgpkeys=('7168B983815A5EEF59A4ADFD2A3F414E736060BA')  # Damien Miller <djm@mindrot.org>
 
@@ -68,6 +68,9 @@ prepare() {
   # prepend configuration option to include drop-in configuration files for sshd_config
   printf "# Include drop-in configurations\nInclude /etc/ssh/sshd_config.d/*.conf\n" | cat - sshd_config > sshd_config.tmp
   mv -v sshd_config.tmp sshd_config
+  # prepend configuration option to include drop-in configuration files for ssh_config
+  printf "# Include drop-in configurations\nInclude /etc/ssh/ssh_config.d/*.conf\n" | cat - ssh_config > ssh_config.tmp
+  mv -v ssh_config.tmp ssh_config
 }
 
 build() {
@@ -106,6 +109,7 @@ package() {
   make DESTDIR="$pkgdir" install
 
   install -vDm 644 ../00-archlinux.conf -t "$pkgdir/etc/ssh/sshd_config.d/"
+  install -vdm 755 "$pkgdir/etc/ssh/ssh_config.d"
 
   ln -sf ssh.1.gz "$pkgdir"/usr/share/man/man1/slogin.1.gz
   install -Dm644 LICENCE -t "$pkgdir/usr/share/licenses/$pkgname/"
