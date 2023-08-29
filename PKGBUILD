@@ -6,7 +6,7 @@
 # Changes by Matthijs Tadema
 
 pkgname=openssh-custom
-pkgver=9.3p1
+pkgver=9.4p1
 pkgrel=1
 pkgdesc="SSH protocol implementation for remote login, command execution and file transfer"
 arch=('x86_64')
@@ -56,7 +56,7 @@ b2sums=('SKIP'
 validpgpkeys=('7168B983815A5EEF59A4ADFD2A3F414E736060BA')  # Damien Miller <djm@mindrot.org>
 
 #pkgver() {
-#    cd "$srcdir/${pkgname%-custom}"
+#    cd "$srcdir/${pkgname%-custom}-portable-${_tag}"
 #    # Git, tags available
 #    printf "%s" "$(git describe --long | sed 's/\([^-]*-\)g/r\1/;s/-/./g')"
 #}
@@ -81,6 +81,7 @@ build() {
     --with-xauth=/usr/bin/xauth \
     --with-pid-dir=/run \
     --with-default-path='/usr/local/sbin:/usr/local/bin:/usr/bin' \
+    --without-zlib-version-check \
 
   make
 }
