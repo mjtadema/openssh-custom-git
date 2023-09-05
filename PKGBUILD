@@ -10,7 +10,12 @@ pkgrel=2
 pkgdesc="SSH protocol implementation for remote login, command execution and file transfer"
 arch=(x86_64)
 url='https://www.openssh.com/portable.html'
-license=(custom:BSD)
+license=(
+  BSD-2-Clause
+  BSD-3-Clause
+  ISC
+  MIT
+)
 depends=(
   glibc
   krb5 libkrb5.so libgssapi_krb5.so
