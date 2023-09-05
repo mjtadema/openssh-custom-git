@@ -90,6 +90,7 @@ build() {
     --with-xauth=/usr/bin/xauth
     --with-pid-dir=/run
     --with-default-path='/usr/local/sbin:/usr/local/bin:/usr/bin'
+    --without-zlib-version-check
   )
 
   cd $pkgname-$pkgver
