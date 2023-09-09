@@ -43,7 +43,7 @@ backup=(
 )
 source=(
   https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/$pkgname-$pkgver.tar.gz{,.asc}
-  00-archlinux.conf
+  99-archlinux.conf
   sshdgenkeys.service
   sshd.service
   ssh-agent.service
@@ -120,7 +120,7 @@ package() {
 
   make DESTDIR="$pkgdir" install
 
-  install -vDm 644 ../00-archlinux.conf -t "$pkgdir/etc/ssh/sshd_config.d/"
+  install -vDm 644 ../99-archlinux.conf -t "$pkgdir/etc/ssh/sshd_config.d/"
   install -vdm 755 "$pkgdir/etc/ssh/ssh_config.d"
 
   ln -sf ssh.1.gz "$pkgdir"/usr/share/man/man1/slogin.1.gz
