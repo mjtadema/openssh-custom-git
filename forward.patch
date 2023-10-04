@@ -1,0 +1,33 @@
+diff --git a/ssh.c b/ssh.c
+index 1dbbda7d6..ebab28aa3 100644
+--- a/ssh.c
++++ b/ssh.c
+@@ -1502,7 +1502,27 @@ main(int ac, char **av)
+ 				    "'%s' -> '%s'", cp, p);
+ 			free(cp);
+ 		}
+-	}
++
++        //Custom forward host percent expansion
++        if (options.local_forwards[i].listen_host != NULL) {
++                cp = options.local_forwards[i].listen_host;
++                p = options.local_forwards[i].listen_host =
++                    default_client_percent_expand(cp, cinfo);
++                if (strcmp(cp, p) != 0)
++                        debug3("expanded LocalForward listen host "
++                            "'%s' -> '%s'", cp, p);
++                free(cp);
++        }
++        if (options.local_forwards[i].connect_host != NULL) {
++                cp = options.local_forwards[i].connect_host;
++                p = options.local_forwards[i].connect_host =
++                    default_client_percent_expand(cp, cinfo);
++                if (strcmp(cp, p) != 0)
++                        debug3("expanded LocalForward connect host "
++                            "'%s' -> '%s'", cp, p);
++                free(cp);
++        }
++    }
+ 
+ 	for (i = 0; i < options.num_remote_forwards; i++) {
+ 		if (options.remote_forwards[i].listen_path != NULL) {
