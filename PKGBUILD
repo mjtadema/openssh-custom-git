@@ -9,7 +9,7 @@
 # Bump version if necessary
 
 pkgname=openssh-custom
-pkgver=9.5p1
+pkgver=9.6p1
 pkgrel=1
 pkgdesc="SSH protocol implementation for remote login, command execution and file transfer"
 arch=(x86_64)

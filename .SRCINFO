@@ -1,6 +1,6 @@
 pkgbase = openssh-custom
 	pkgdesc = SSH protocol implementation for remote login, command execution and file transfer
-	pkgver = 9.5p1
+	pkgver = 9.6p1
 	pkgrel = 1
 	url = https://www.openssh.com/portable.html
 	arch = x86_64
@@ -32,7 +32,7 @@ pkgbase = openssh-custom
 	backup = etc/pam.d/sshd
 	backup = etc/ssh/ssh_config
 	backup = etc/ssh/sshd_config
-	source = openssh-custom::git+https://github.com/openssh/openssh-portable.git#tag=V_9_5_P1
+	source = openssh-custom::git+https://github.com/openssh/openssh-portable.git#tag=V_9_6_P1
 	source = 99-archlinux.conf
 	source = sshdgenkeys.service
 	source = sshd.service
